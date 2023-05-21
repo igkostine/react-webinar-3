@@ -7,10 +7,6 @@ function Item(props){
     onAdd: (e) => {
       e.stopPropagation();
       props.onAdd(props.item.code);
-    },
-    onDelete: (e) => {
-      e.stopPropagation();
-      props.onDelete(props.item.code);
     }
   }
 
@@ -25,21 +21,9 @@ function Item(props){
           {Intl.NumberFormat("ru",{style: "currency", currency: "RUB", minimumFractionDigits: 0}).format(props.item.price)}
         </div>
 
-        {props.showCount && props.item.count && (
-          <div className="Item-count">{props.item.count} шт.</div>
-        )}
-
-        {props.onAdd && (
-          <button onClick={callbacks.onAdd}>
-            Добавить
-          </button>
-        )}
-
-        {props.onDelete && (
-          <button onClick={callbacks.onDelete}>
-            Удалить
-          </button>
-        )}
+        <button onClick={callbacks.onAdd}>
+          Добавить
+        </button>
       </div>
     </div>
   );
@@ -52,13 +36,7 @@ Item.propTypes = {
     price: PropTypes.number,
     count: PropTypes.number
   }).isRequired,
-  showCount: PropTypes.bool,
   onAdd: PropTypes.func,
-  onDelete: PropTypes.func,
 };
-
-Item.defaultProps = { 
-  showCount: false
-}
 
 export default React.memo(Item);

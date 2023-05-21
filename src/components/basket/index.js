@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import List from "../list"
-import Item from "../item"
+import ItemBasket from "../item-basket"
 import "./style.css"
 
 function Basket({basket, totalPrice, deleteOnBasket}) {
@@ -11,7 +11,7 @@ function Basket({basket, totalPrice, deleteOnBasket}) {
 		<>
 			<List>
 				{basket.map(item => 
-					<Item key={item.code} item={item} onDelete={deleteOnBasket} showCount  />
+					<ItemBasket key={item.code} item={item} onDelete={deleteOnBasket}  />
 				)}
 			</List>
 			<div className="Basket-result">

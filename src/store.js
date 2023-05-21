@@ -3,7 +3,7 @@
  */
 class Store {
 	constructor(initState = {}) {
-		this.state = initState
+	  this.state = initState
 		this.listeners = [] // Слушатели изменений состояния
 	}
 
@@ -32,7 +32,7 @@ class Store {
 	 * Установка состояния
 	 * @param newState {Object}
 	 */
-	setState(newState) {
+	#setState(newState) {
 		this.state = newState
 		// Вызываем всех слушателей
 		for (const listener of this.listeners) listener()
@@ -43,7 +43,7 @@ class Store {
 	 * @param code
 	 */
 	deleteOnBasket(code) {
-		this.setState({
+		this.#setState({
 			...this.state,
 			basket: this.state.basket.filter(item => item.code !== code),
 		})
@@ -54,21 +54,19 @@ class Store {
 	 * @param code
 	 */
 	addToBasket(code) {
-		const newBasket = [...this.state.basket]
-
-		const currentBasketItem = newBasket.find(item => item.code === code) // проверяем есть ли элемент в корзине
-
-		if(currentBasketItem) { // если есть, то в количество прибавляем 1
-			++currentBasketItem.count
-		} else { // если нет, то добавляем в корзину с количеством 1
-			const newBasketItem = this.state.list.find(item => item.code === code)
-			newBasket.push({...newBasketItem, count: 1})
-		}
-
-    this.setState({
-      ...this.state,
-			basket: newBasket
-    })
+		const newItem = this.state.list.find(item => item.code === code);
+    const foundItem = this.state.basket.find((item) => item.code === newItem.code);
+    if(foundItem) {
+      this.#setState({
+        ...this.state,
+        basket: [
+          ...this.state.basket.filter((item) => item.code !== newItem.code),
+          {...foundItem, count: foundItem.count + 1}
+        ]
+      });
+    } else {
+      this.#setState({...this.state, basket: [...this.state.basket, {...newItem, count: 1}]});
+    }
   }
 
 	/**
